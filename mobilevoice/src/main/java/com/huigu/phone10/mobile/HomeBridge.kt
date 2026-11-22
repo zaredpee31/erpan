@@ -21,7 +21,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 
 /**
- * 家里版：不连 Operit，连阿辞的服务器（/companion/call/*）。
+ * 家里版：不连 Operit，连阿辞的服务器（/companion/call/ 下面那三个口子）。
  * 对外照 OperitBridge 的形状（listChats / reply / readReplies / close），别的文件只换构造。
  * 一个 HomeBridge 就是一通电话：session 随机生成，close() 告诉服务器挂了，服务器写摘要。
  */
