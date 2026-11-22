@@ -63,7 +63,7 @@ internal class MiniMaxSpeech(private val config: SpeechConfig, private val socke
                         check(!connected); connected = true
                         send("task_start") {
                             addProperty("model", config.ttsModel)
-                            add("voice_setting", JsonObject().apply { addProperty("voice_id", config.voice) })
+                            add("voice_setting", JsonObject().apply { addProperty("voice_id", config.voice); addProperty("speed", 1.02) })  // 家里版：她听着偏慢，11-22 试 1.02
                             add("audio_setting", JsonObject().apply {
                                 addProperty("sample_rate", 24_000); addProperty("format", "pcm"); addProperty("channel", 1)
                             })
