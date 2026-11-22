@@ -324,7 +324,7 @@ class VoiceConversation(
     }
 
     private suspend fun sendToChat(text: String, unavailable: Boolean = false) {
-        report(if (unavailable) "智能判断不可用，已按静音提交；等待 Operit 回复…" else "等待 Operit 回复…")
+        report(if (unavailable) "智能判断不可用，已按静音提交；等待阿辞回复…" else "等待阿辞回复…")
         val speechFailure = if (roleReply == null) streamReply(text) else {
             var failure: String? = null
             replying = true
@@ -412,7 +412,7 @@ class VoiceConversation(
                 if (streamSpeak != null) {
                     stage("语音合成或播放失败，请检查合成服务配置与网络。") { streamSpeak.invoke(queue) }
                 } else for (segment in queue) {
-                    report("正在播放 Operit 的回复…")
+                    report("正在播放阿辞的回复…")
                     stage("语音合成或播放失败，请检查合成服务配置与网络。") { speak(segment) }
                 }
             } catch (cancelled: CancellationException) {
@@ -432,7 +432,7 @@ class VoiceConversation(
             }
         }
         try {
-            stage("Operit 回复失败，请检查 Operit 连接与聊天状态；本轮不会自动重发。") {
+            stage("阿辞回复失败，请检查服务器连接；本轮不会自动重发。") {
                 source(text) { delta -> mutex.withLock {
                     replyContext.ensureActive()
                     deliverCaption { onReplyDelta(delta) }

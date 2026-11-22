@@ -83,7 +83,7 @@ import androidx.compose.ui.viewinterop.AndroidView
                         Text(state.homeStatus(configured), color = ErpanColors.Muted, fontSize = 15.sp)
                     }
                     HorizontalDivider(color = ErpanColors.Line, thickness = 0.6.dp)
-                    Text("声音回手机 · 文字回 Operit", color = ErpanColors.Muted, fontSize = 10.sp, maxLines = 2)
+                    Text("声音回手机 · 摘要回 AC", color = ErpanColors.Muted, fontSize = 10.sp, maxLines = 2)
                 }
             }
         }
@@ -91,8 +91,6 @@ import androidx.compose.ui.viewinterop.AndroidView
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FilterChip(selected = !settings.listenOnly, onClick = { onListenOnly(false) }, enabled = !state.running && !busy,
                     label = { Text("语音通话") })
-                FilterChip(selected = settings.listenOnly, onClick = { onListenOnly(true) }, enabled = !state.running && !busy,
-                    label = { Text("只听回复") })
             }
             Text(if (settings.speech.clientSegmentedTts) "首个断句标点到达即提交合成，后续合段；实际出声仍需等待模型生成。"
             else if (settings.speech.wholeReplyTts) {

@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
         }) }
         var draft by remember { mutableStateOf(saved) }
         var editingProfileId by remember { mutableStateOf(saved.currentVoiceProfile()?.id) }
-        var page by rememberSaveable { mutableStateOf("home") }
+        var page by rememberSaveable { mutableStateOf("call") }  // 家里版：先到通话页，原首页当设置
         var aboutReturn by rememberSaveable { mutableStateOf("home") }
         var target by remember { mutableStateOf("") }
         val state by VoiceService.state.collectAsState()
@@ -117,12 +117,14 @@ class MainActivity : ComponentActivity() {
             if (checking) checkJob?.cancel()
             when (page) {
                 "about" -> page = aboutReturn
+                "home" -> page = "call"
                 "keepsakes", "voices", "capture_probe" -> page = "home"
                 "config" -> if (draft != saved) askSave = true else { page = configReturn; notice = "" }
                 "appearance" -> { appearanceDraft = appearance; page = "home"; notice = "" }
             }
         }
-        BackHandler(enabled = page != "home") { back() }
+        BackHandler(enabled = page != "call") { back() }
+        LaunchedEffect(state.running) { if (state.running && page == "home") page = "call" }
 
         fun persist(next: MobileSettings, after: () -> Unit = {}) {
             if (busy) return
@@ -331,6 +333,11 @@ class MainActivity : ComponentActivity() {
         }
 
         when (page) {
+            "call" -> ErpanCall(saved, state, avatar, busy, notice, onStart = { requestStart() }, onEnd = {
+                    state.pendingDraft?.let { VoiceService.cancelPendingDraft(it.id) }
+                    stopService(Intent(this@MainActivity, VoiceService::class.java))
+                }, onMute = { startService(Intent(this@MainActivity, VoiceService::class.java).setAction(VoiceService.TOGGLE)) },
+                onSettings = { notice = ""; page = "home" })
             "capture_probe" -> CaptureProbePage(onBack = { back() })
             "voices" -> VoiceProfilesPage(saved,busy,state.running,profileError.ifBlank {notice},
                 groupTab=voicesGroupTab,onTab={voicesGroupTab=it},

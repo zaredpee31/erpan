@@ -337,7 +337,7 @@ class VoiceService : Service() {
                 CloudSpeech(speech, client = speechClient, onSynthesisStatus = synthesisStatus)
             }
             fun write(output: PcmPlayer, pcm: ByteArray) {
-                child.launch { if (callScope === child) setState("正在播放 Operit 的回复…") }
+                child.launch { if (callScope === child) setState("正在播放阿辞的回复…") }
                 output.write(pcm)
             }
             val stream: (suspend (kotlinx.coroutines.channels.ReceiveChannel<String>) -> Unit)? =
