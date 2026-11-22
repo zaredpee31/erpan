@@ -26,7 +26,7 @@ class VoiceService : Service() {
     private var transition: Job? = null
     private var recorder: PcmRecorder? = null
     private var captureJob: Job? = null
-    private var bridge: OperitBridge? = null
+    private var bridge: HomeBridge? = null
     private var conversation: VoiceConversation? = null
     private var replyListener: ReplyListener? = null
     private val player = AtomicReference<PcmPlayer?>()
@@ -324,7 +324,7 @@ class VoiceService : Service() {
         val speechClient = okhttp3.OkHttpClient()
         val cloud = CloudSpeech(config.speech, client = speechClient, onSynthesisStatus = synthesisStatus)
         val synthesisClients = mutableMapOf(config.speech to cloud)
-        val o = OperitBridge(this).also { bridge = it }
+        val o = HomeBridge(config).also { bridge = it }
         val judge = if (!config.listenOnly && config.smartEndpoint && !config.confirmBeforeSend)
             CloudEndJudge(requireNotNull(config.endJudge)) else null
         wakeLock = (getSystemService(POWER_SERVICE) as PowerManager)

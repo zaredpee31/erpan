@@ -29,6 +29,9 @@ data class MobileSettings(
     val confirmBeforeSend: Boolean = false,
     val roleVoiceBindings: List<RoleVoiceBinding>? = null,
     val preserveBreath: Boolean = false,
+    // 家里版：连阿辞的服务器
+    val homeUrl: String? = null,
+    val homeToken: String? = null,
 )
 
 /** User-owned credentials stay encrypted in this app's non-backup storage. */

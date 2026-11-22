@@ -49,9 +49,11 @@ import java.util.Locale
             if (notice.isNotBlank()) Text(notice, color = ErpanColors.Rose, fontSize = 13.sp)
             Spacer(Modifier.height(6.dp))
             SectionTitle("聊天连接")
+            FormField("服务器地址", settings.homeUrl.orEmpty(), enabled, placeholder = HomeBridge.DEFAULT_URL) { onChange(settings.copy(homeUrl = it.trim())) }
+            FormField("通话钥匙", settings.homeToken.orEmpty(), enabled, secret = true, placeholder = "填写服务器上的通话钥匙") { onChange(settings.copy(homeToken = it.trim())) }
             ErpanNavigationCard("选中聊天窗口", subtitle = if (listing) "正在读取…" else settings.displayChat(),
                 enabled = enabled && !listing, onClick = onChats)
-            Hint("聊天模型、角色和历史在 Operit 中设置")
+            Hint("填好地址和钥匙后点上面选中「阿辞」。模型跟着 AC 置顶会话走")
             ConfigDivider()
             SectionTitle("语音方案")
             Text(profileName ?: "新方案", fontSize = 17.sp)

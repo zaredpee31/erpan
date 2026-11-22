@@ -300,7 +300,7 @@ class MainActivity : ComponentActivity() {
             val snapshot = draft
             checking = true; showCheck = true; checkResult = "正在检查填写内容…"
             checkJob = scope.launch {
-                var connection: OperitBridge? = null
+                var connection: HomeBridge? = null
                 try {
                     val issues = configurationIssues(snapshot)
                     if (issues.isNotEmpty()) {
@@ -308,7 +308,7 @@ class MainActivity : ComponentActivity() {
                         return@launch
                     }
                     val cloud = CloudSpeech(snapshot.speech)
-                    val o = OperitBridge(this@MainActivity).also { connection = it }
+                    val o = HomeBridge(snapshot).also { connection = it }
                     val checker = ConnectionCheck({
                         val choices = o.listChats()
                         if (snapshot.listenOnly && choices.any { it.id == snapshot.chatId }) o.readReplies(snapshot.chatId, null)
@@ -347,7 +347,7 @@ class MainActivity : ComponentActivity() {
                 if (!busy && !state.running) scope.launch {
                     busy=true
                     val selectedChat=saved.chatId
-                    val reader=OperitBridge(this@MainActivity)
+                    val reader=HomeBridge(saved)
                     try {
                         val snapshot=reader.readReplies(selectedChat,null,true)
                         if(saved.chatId==selectedChat){recentRoles=snapshot.roleNames;roleError=if(recentRoles.isEmpty())"最近消息没有角色名，可以手动填写。" else ""}
@@ -421,9 +421,9 @@ class MainActivity : ComponentActivity() {
                     if (!listing) {
                         listing = true; notice = ""
                         scope.launch {
-                            val o = OperitBridge(this@MainActivity)
+                            val o = HomeBridge(draft)
                             try { chats = o.listChats() }
-                            catch (_: Exception) { notice = "Operit 未返回聊天列表。请检查 Operit 已打开、连接插件与工作流已启用。" }
+                            catch (_: Exception) { notice = "没连上阿辞的服务器。请检查服务器地址和通话钥匙。" }
                             finally { o.close(); listing = false }
                         }
                     }

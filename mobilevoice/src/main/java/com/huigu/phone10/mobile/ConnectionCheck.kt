@@ -30,9 +30,9 @@ internal class ConnectionCheck(
             results += "$label：$result"
             report(results.joinToString("\n\n"))
         }
-        check("聊天连接", "未读到聊天列表，请打开 Operit，检查连接插件和工作流是否启用。") {
+        check("聊天连接", "没连上阿辞的服务器，请检查服务器地址和通话钥匙。") {
             if (listChats().any { it.id == settings.chatId }) "已找到所选聊天；未发送测试消息。"
-            else "已连接 Operit，但未找到所选聊天，请重新选择聊天窗口。"
+            else "已连上服务器，但没选中「阿辞」，请重新选择聊天窗口。"
         }
         if (!settings.listenOnly) check("语音识别", "检查失败，请核对识别地址、密钥、模型和网络。") {
             checkRecognition()
